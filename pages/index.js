@@ -17,10 +17,24 @@ const DUMMY_MEETUPS = [
   },
 ];
 
-function HomePage() {
+function HomePage(props) {
   return (
-    <MeetupList meetups={DUMMY_MEETUPS} />
+    <MeetupList meetups={props.meetups} />
   );
+}
+
+/**
+ * This works only in pages!
+ * It has to be called getStaticProps so that Next.js can recognise it and execute it before rendering the page.
+ * We can write any server code since it will be executed in server.
+ * @returns an object with a props property
+ */
+export async function getStaticProps() {
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    },
+  };
 }
 
 export default HomePage;
