@@ -1,9 +1,19 @@
+import Head from 'next/head.js';
 import MeetupList from '../components/meetups/MeetupList.js';
 import { fetchMeetups } from '../utils/meetupsUtil.js'
 
 function HomePage(props) {
   return (
-    <MeetupList meetups={props.meetups} />
+    <>
+      <Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list of highly active React Meetups!"
+        />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </>
   );
 }
 
