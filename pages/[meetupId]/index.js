@@ -1,12 +1,13 @@
 import MeetupDetail from "../../components/meetups/MeetupDetail.js";
+import { fetchMeetupsForPaths, fetchMeetup } from "../../utils/meetupsUtil.js";
 
-function MeetupDetails() {
+function MeetupDetails(props) {
   return (
     <MeetupDetail
-      image="https://res.cloudinary.com/djcyhbk2e/image/upload/c_limit,f_auto,q_50,w_1400/v1/gvv/prod/ssuc27lzmy95cx7o8cgg"
-      title="A First Meetup"
-      address="Some address 5, 12345 Some City"
-      description="This is a first meetup!"
+      image={props.meetupData.image}
+      title={props.meetupData.title}
+      address={props.meetupData.address}
+      description={props.meetupData.description}
     />
   );
 }
@@ -16,34 +17,30 @@ function MeetupDetails() {
  * Here we can define the ids.
  */
 export async function getStaticPaths() {
+  const meetupsForPaths = await fetchMeetupsForPaths();
+
   return {
     fallback: true, //false = all possible id values are defined here. True = only some id values are defined here
-    paths: [
-      {
-        params: {
-          meetupId: 'm1',
-        },
-      },
-      {
-        params: {
-          meetupId: 'm2',
-        },
-      },
-    ],
+    paths: meetupsForPaths.map(meetupForPath => ({
+      params: {
+        meetupId: meetupForPath._id.toString()
+      }
+    })),
   };
 }
 
 export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
+  const selectedMeetup = await fetchMeetup(meetupId);
 
   return {
     props: {
       meetupData: {
-        image: "https://res.cloudinary.com/djcyhbk2e/image/upload/c_limit,f_auto,q_50,w_1400/v1/gvv/prod/ssuc27lzmy95cx7o8cgg",
-        id: meetupId,
-        title: "A First Meetup",
-        address: "Some address 5, 12345 Some City",
-        description: "This is a first meetup!",
+        id: selectedMeetup._id.toString(),
+        image: selectedMeetup.image,
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        description: selectedMeetup.description
       }
     }
   };
