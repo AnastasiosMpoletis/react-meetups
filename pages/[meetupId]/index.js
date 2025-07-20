@@ -30,7 +30,11 @@ export async function getStaticPaths() {
   const meetupsForPaths = await fetchMeetupsForPaths();
 
   return {
-    fallback: true, //false = all possible id values are defined here. True = only some id values are defined here
+    /**
+     * false = all possible id values are defined here. True = only some id values are defined here.
+     * When fallback: true is enabled, the page component will render before getStaticProps finishes, and during that time, props.meetupData is temporarily undefined.
+     */
+    fallback: false,
     paths: meetupsForPaths.map(meetupForPath => ({
       params: {
         meetupId: meetupForPath._id.toString()
