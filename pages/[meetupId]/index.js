@@ -6,17 +6,17 @@ function MeetupDetails(props) {
   return (
     <>
       <Head>
-        <title>{props.meetupData?.title}</title>
+        <title>{props.meetupData.title}</title>
         <meta
           name="description"
-          content={props.meetupData?.description}
+          content={props.meetupData.description}
         />
       </Head>
       <MeetupDetail
-        image={props.meetupData?.image}
-        title={props.meetupData?.title}
-        address={props.meetupData?.address}
-        description={props.meetupData?.description}
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
       />
     </>
   );
@@ -30,11 +30,7 @@ export async function getStaticPaths() {
   const meetupsForPaths = await fetchMeetupsForPaths();
 
   return {
-    /**
-     * false = all possible id values are defined here. True = only some id values are defined here.
-     * When fallback: true is enabled, the page component will render before getStaticProps finishes, and during that time, props.meetupData is temporarily undefined.
-     */
-    fallback: true,
+    fallback: 'blocking',
     paths: meetupsForPaths.map(meetupForPath => ({
       params: {
         meetupId: meetupForPath._id.toString()
