@@ -2,7 +2,6 @@
  * Only server functionality.
  * Folder must be name api for Next.js to recognise it.
  */
-require("dotenv").config();
 import { MongoClient } from "mongodb";
 
 async function handler(req, res) {
